@@ -1,4 +1,8 @@
 const inquirer = require('inquirer');
+const cTable = require("console.table");
+const EmployeeDB = require('./employeeDB');
+
+const empDB = new EmployeeDB();
 
 function start(){
     inquirer.prompt([
@@ -18,6 +22,27 @@ function start(){
         }
        
     ]).then(answer => {
-
+        if(answer.userChoice === "View All Employees"){
+            viewAllEmployees();
+        }
+        else if(answer.userChoice === "Exit"){
+            exit();
+        }
     })
 }
+
+function viewAllEmployees(){
+    empDB.getAllEmployees(dataTable);  
+}
+
+function exit(){
+    empDB.close();
+}
+
+function dataTable(data){
+    console.log();
+    console.table(data);
+    start();
+}
+
+start();
