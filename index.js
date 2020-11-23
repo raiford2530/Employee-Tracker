@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const cTable = require("console.table");
 const EmployeeDB = require('./employeeDB');
+const { cachedDataVersionTag } = require('v8');
 
 const empDB = new EmployeeDB();
 
@@ -23,16 +24,12 @@ function start(){
        
     ]).then(answer => {
         if(answer.userChoice === "View All Employees"){
-            viewAllEmployees();
+            empDB.getAllEmployees().then(employees => dataTable(employees));;
         }
         else if(answer.userChoice === "Exit"){
             exit();
         }
     })
-}
-
-function viewAllEmployees(){
-    empDB.getAllEmployees(dataTable);  
 }
 
 function exit(){
