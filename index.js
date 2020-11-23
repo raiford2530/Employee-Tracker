@@ -26,6 +26,9 @@ function start(){
         if(answer.userChoice === "View All Employees"){
             empDB.getAllEmployees().then(employees => dataTable(employees));;
         }
+        if(answer.userChoice === "View All Roles"){
+            empDB.getAllRoles().then(roles => dataTable(roles));;
+        }
         else if(answer.userChoice === "Exit"){
             exit();
         }
