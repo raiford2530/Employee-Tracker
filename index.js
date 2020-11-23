@@ -25,9 +25,10 @@ function start(){
     ]).then(answer => {
         if(answer.userChoice === "View All Employees"){
             empDB.getAllEmployees().then(employees => dataTable(employees));;
-        }
-        if(answer.userChoice === "View All Roles"){
+        }else if(answer.userChoice === "View All Roles"){
             empDB.getAllRoles().then(roles => dataTable(roles));;
+        }else if(answer.userChoice === "View All Departments"){
+            empDB.getAllDepartments().then(departments => dataTable(departments));;
         }
         else if(answer.userChoice === "Exit"){
             exit();
