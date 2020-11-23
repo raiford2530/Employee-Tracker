@@ -30,6 +30,15 @@ class EmployeeDB{
         })    
     }
 
+    getAllRoles(){
+        return new Promise((resolve, reject) => {
+            this.#connection.query("SELECT title AS roles FROM role", (err, res) => {
+                if(err) throw err;            
+                resolve(res);
+            })
+        })    
+    }
+
     close(){
         this.#connection.end();
     }
