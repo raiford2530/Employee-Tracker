@@ -41,16 +41,26 @@ class EmployeeDB{
 
     getAllRoles(){
         return new Promise((resolve, reject) => {
-            this.#connection.query("SELECT title, id FROM role", (err, res) => {
+            this.#connection.query("SELECT id, title FROM role", (err, res) => {
                 if(err) throw err;            
                 resolve(res);
             })
         })    
     }
 
-    getAllDepartments(){
+    addRole(role){
         return new Promise((resolve, reject) => {
-            this.#connection.query("SELECT name AS departments FROM department", (err, res) => {
+            this.#connection.query("INSERT INTO role SET ?", role, (err, res) => {
+                if(err) throw err;
+                resolve(role);              
+            })
+        })       
+    }
+
+    getAllDepartments(){
+        let query = `SELECT id, name FROM department`
+        return new Promise((resolve, reject) => {
+            this.#connection.query(query, (err, res) => {
                 if(err) throw err;            
                 resolve(res);
             })
