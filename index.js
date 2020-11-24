@@ -24,16 +24,17 @@ function start(){
        
     ]).then(answer => {
         if(answer.userChoice === "View All Employees"){
-            empDB.getAllEmployees().then(employees => dataTable(employees));;
+            empDB.getAllEmployees().then(employees => dataTable(employees));
         }else if(answer.userChoice === "View All Roles"){
-            empDB.getAllRoles().then(allRoles => {
-                const roleTitles = allRoles.map(role => { return {roles: role.title}});
-                dataTable(roleTitles);
-            })
+            empDB.getAllRoles().then(allRoles => dataTable(allRoles));
         }else if(answer.userChoice === "Add Employee"){
             addEmployee();
         }else if(answer.userChoice === "View All Departments"){
-            empDB.getAllDepartments().then(departments => dataTable(departments));;
+            empDB.getAllDepartments(false).then(departments =>{
+                dataTable(departments)
+            });
+        }else if(answer.userChoice === "Add Role"){
+            addRole();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -88,6 +89,37 @@ function addEmployee(){
                 })
             })
         })     
+    })
+}
+
+function addRole(){
+    empDB.getAllDepartments().then(departments => {
+
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "What is the title of the new role?",
+                name: "title"
+            },
+            {
+                type: "input",
+                message: "What is the salary for the new role?",
+                name: "salary"
+            },
+            {
+                type: "list",
+                message: "In what department is the new role?",
+                name: "department_id",
+                choices: departments.map(department => { return {name: department.name, value: department.id}})
+            }
+        ]).then(roleAnswer => {
+            empDB.addRole(roleAnswer)
+            .then(role => {
+                console.log(`${role.title} role successfully added to the database.`);
+                start();
+            })
+        })
+
     })
 }
 
