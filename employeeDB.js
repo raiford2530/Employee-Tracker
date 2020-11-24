@@ -67,6 +67,15 @@ class EmployeeDB{
         })    
     }
 
+    addDepartment(department){
+        return new Promise((resolve, reject) => {
+            this.#connection.query("INSERT INTO department(name) VALUES(?)", department, (err, res) => {
+                if(err) throw err;
+                resolve(department);              
+            })
+        })       
+    }
+
     close(){
         this.#connection.end();
     }
