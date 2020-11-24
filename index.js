@@ -14,6 +14,7 @@ function start(){
             choices: [
                 "View All Employees",
                 "Add Employee",
+                "Update Employee Role",
                 "View All Roles",
                 "Add Role",
                 "View All Departments",
@@ -37,6 +38,8 @@ function start(){
             addRole();
         }else if(answer.userChoice === "Add Department"){
             addDepartment();
+        }else if(answer.userChoice === "Update Employee Role"){
+            updateEmployeeRole();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -91,6 +94,31 @@ function addEmployee(){
                 })
             })
         })     
+    })
+}
+
+function updateEmployeeRole(){
+    empDB.getAllEmployees().then(employees => {
+        empDB.getAllRoles().then(roles => {
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Which employee's role would you like to update?",
+                    name: "id",
+                    choices: employees.map(employee => {return {name: `${employee.first_name} ${employee.last_name}`, value: employee.id}})
+                },
+                {
+                    type: "list",
+                    message: "Which role do you want to assign to the employee?",
+                    name: "role_id",
+                    choices: roles.map(role => {return {name: role.title, value: role.id}})
+                }
+            ]).then(answer => {
+                empDB.updateEmployeeRole(answer);
+                console.log("Updated employee's role.");
+                start();
+            })
+        })
     })
 }
 
