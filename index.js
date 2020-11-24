@@ -35,6 +35,8 @@ function start(){
             });
         }else if(answer.userChoice === "Add Role"){
             addRole();
+        }else if(answer.userChoice === "Add Department"){
+            addDepartment();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -120,6 +122,23 @@ function addRole(){
             })
         })
 
+    })
+}
+
+function addDepartment(){
+
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the department name?",
+            name: "name"
+        }
+    ]).then(departmentAnswer => {
+        empDB.addDepartment(departmentAnswer.name)
+        .then(department => {
+            console.log(`${department} department successfully added to the database.`);
+            start();
+        })
     })
 }
 
