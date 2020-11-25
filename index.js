@@ -20,6 +20,7 @@ function start(){
                 "Delete Employee",
                 "View All Roles",
                 "Add Role",
+                "Delete Role",
                 "View All Departments",
                 "Add Department",
                 "Exit"
@@ -50,6 +51,8 @@ function start(){
             viewEmployeesByManager();
         }else if(answer.userChoice === "Delete Employee"){
             deleteEmployee();
+        }else if(answer.userChoice === "Delete Role"){
+            deleteRole();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -219,6 +222,24 @@ function addRole(){
             })
         })
 
+    })
+}
+
+function deleteRole(){
+    empDB.getAllRoles().then(roles => {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which role do you want to delete?",
+                name: "id",
+                choices: roles.map(role => { return {name: role.title, value: role.id}})
+            }
+        ]).then(answers => {
+            empDB.deleteRole(answers.id).then(res => {
+                console.log("Deleted role from database.");
+                start();
+            })
+        })
     })
 }
 
