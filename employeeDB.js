@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const { isRegExp } = require('util');
 
 class EmployeeDB{
     #connection;
@@ -79,8 +80,9 @@ class EmployeeDB{
     getAllManagers(){
         const query = `SELECT DISTINCT e2.first_name, e2.last_name, e2.id 
                        FROM employee e1
-                       JOIN employee e2 
-                       ON e1.manager_id = e2.id`
+                       RIGHT JOIN employee e2 
+                       ON e1.manager_id = e2.id
+                       WHERE e1.manager_id = e2.id OR e2.manager_id = null`
         return new Promise((resolve, reject) => {
             this.#connection.query(query, (err, res) => {
                 if(err) throw err;
@@ -88,6 +90,8 @@ class EmployeeDB{
             })
         }) 
     }
+
+
 
     getAllRoles(){
         return new Promise((resolve, reject) => {
