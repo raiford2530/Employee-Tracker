@@ -57,6 +57,38 @@ class EmployeeDB{
         })       
     }
 
+    getEmployeesByManager(managerId){
+        const query = `SELECT e.id, e.first_name, e.last_name, r.title, d.name department, r.salary, CONCAT(m.first_name, ' ', m.last_name) manager
+        FROM employee AS e
+        LEFT JOIN employee AS m
+        ON e.manager_id = m.id
+        JOIN role AS r
+        ON e.role_id = r.id
+        JOIN department AS d 
+        ON r.department_id = d.id
+        WHERE e.manager_id = ?`;
+        
+        return new Promise((resolve, reject) => {
+            this.#connection.query(query, managerId, (err, res) => {
+                if(err) throw err;
+                resolve(res);              
+            })
+        })  
+    }
+
+    getAllManagers(){
+        const query = `SELECT DISTINCT e2.first_name, e2.last_name, e2.id 
+                       FROM employee e1
+                       JOIN employee e2 
+                       ON e1.manager_id = e2.id`
+        return new Promise((resolve, reject) => {
+            this.#connection.query(query, (err, res) => {
+                if(err) throw err;
+                resolve(res);              
+            })
+        }) 
+    }
+
     getAllRoles(){
         return new Promise((resolve, reject) => {
             this.#connection.query("SELECT id, title FROM role", (err, res) => {
