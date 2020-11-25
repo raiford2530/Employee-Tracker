@@ -17,14 +17,14 @@ function start(){
                 "Update Employee Role",
                 "Update Employee Manager",
                 "View Employees By Manager",
+                "Delete Employee",
                 "View All Roles",
                 "Add Role",
                 "View All Departments",
                 "Add Department",
                 "Exit"
             ]
-        }
-       
+        }   
     ]).then(answer => {
         if(answer.userChoice === "View All Employees"){
             empDB.getAllEmployees().then(employees => dataTable(employees));
@@ -48,6 +48,8 @@ function start(){
         }
         else if(answer.userChoice === "View Employees By Manager"){
             viewEmployeesByManager();
+        }else if(answer.userChoice === "Delete Employee"){
+            deleteEmployee();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -169,6 +171,24 @@ function viewEmployeesByManager(){
             })
         })
     })   
+}
+
+function deleteEmployee(){
+    empDB.getAllEmployees().then(employees => {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which employee would you like to delete?",
+                name: "id",
+                choices: employees.map(employee => {return {name: `${employee.first_name} ${employee.last_name}`, value: employee.id}})
+            }
+        ]).then(answers => {
+            empDB.deleteEmployee(answers.id).then(res => {
+                console.log("Deleted employee from the database.");
+                start();
+            })
+        })
+    })
 }
 
 function addRole(){
