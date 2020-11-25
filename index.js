@@ -15,6 +15,7 @@ function start(){
                 "View All Employees",
                 "Add Employee",
                 "Update Employee Role",
+                "Update Employee Manager",
                 "View All Roles",
                 "Add Role",
                 "View All Departments",
@@ -40,6 +41,9 @@ function start(){
             addDepartment();
         }else if(answer.userChoice === "Update Employee Role"){
             updateEmployeeRole();
+        }
+        else if(answer.userChoice === "Update Employee Manager"){
+            updateEmployeeManager();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -119,6 +123,30 @@ function updateEmployeeRole(){
                 start();
             })
         })
+    })
+}
+
+function updateEmployeeManager(){
+    empDB.getAllEmployees().then(employees => {
+            const employeeChoices = employees.map(employee => {return {name: `${employee.first_name} ${employee.last_name}`, value: employee.id}})
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Which employee's manager do you want to update?",
+                    name: "id",
+                    choices: employeeChoices
+                },
+                {
+                    type: "list",
+                    message: "Which employee do you want to set as manager for the seleted employee?",
+                    name: "manager_id",
+                    choices: employeeChoices
+                }
+            ]).then(answer => {
+                empDB.updateEmployeeManager(answer);
+                console.log("Updated employee's manager.");
+                start();
+            })
     })
 }
 
