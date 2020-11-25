@@ -48,6 +48,15 @@ class EmployeeDB{
         })       
     }
 
+    updateEmployeeManager(data){
+        return new Promise((resolve, reject) => {
+            this.#connection.query("UPDATE employee SET manager_id = ? WHERE id = ?", [data.manager_id, data.id], (err, res) => {
+                if(err) throw err;
+                resolve(data);              
+            })
+        })       
+    }
+
     getAllRoles(){
         return new Promise((resolve, reject) => {
             this.#connection.query("SELECT id, title FROM role", (err, res) => {
