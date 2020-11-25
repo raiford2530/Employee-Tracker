@@ -23,6 +23,7 @@ function start(){
                 "Delete Role",
                 "View All Departments",
                 "Add Department",
+                "Delete Department",
                 "Exit"
             ]
         }   
@@ -53,6 +54,8 @@ function start(){
             deleteEmployee();
         }else if(answer.userChoice === "Delete Role"){
             deleteRole();
+        }else if(answer.userChoice === "Delete Department"){
+            deleteDepartment();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -256,6 +259,24 @@ function addDepartment(){
         .then(department => {
             console.log(`${department} department successfully added to the database.`);
             start();
+        })
+    })
+}
+
+function deleteDepartment(){
+    empDB.getAllDepartments().then(departments => {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which department do you want to delete?",
+                name: "id",
+                choices: departments.map(department => { return {name: department.name, value: department.id}})
+            }
+        ]).then(answers => {
+            empDB.deleteDepartment(answers.id).then(res => {
+                console.log("Deleted department from database.");
+                start();
+            })
         })
     })
 }
