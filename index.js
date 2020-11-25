@@ -16,6 +16,7 @@ function start(){
                 "Add Employee",
                 "Update Employee Role",
                 "Update Employee Manager",
+                "View Employees By Manager",
                 "View All Roles",
                 "Add Role",
                 "View All Departments",
@@ -44,6 +45,9 @@ function start(){
         }
         else if(answer.userChoice === "Update Employee Manager"){
             updateEmployeeManager();
+        }
+        else if(answer.userChoice === "View Employees By Manager"){
+            viewEmployeesByManager();
         }
         else if(answer.userChoice === "Exit"){
             exit();
@@ -148,6 +152,23 @@ function updateEmployeeManager(){
                 start();
             })
     })
+}
+
+function viewEmployeesByManager(){
+    empDB.getAllManagers().then(managers => {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which manager do you want to view employees for?",
+                name: "manager_id",
+                choices: managers.map(manager => {return {name: `${manager.first_name} ${manager.last_name}`, value: manager.id}})
+            }
+        ]).then(managerAnswer => {
+            empDB.getEmployeesByManager(managerAnswer.manager_id).then(employees => {
+                dataTable(employees);
+            })
+        })
+    })   
 }
 
 function addRole(){
