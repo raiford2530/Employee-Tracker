@@ -30,30 +30,28 @@ function start(){
     ]).then(answer => {
         if(answer.userChoice === "View All Employees"){
             empDB.getAllEmployees().then(employees => dataTable(employees));
-        }else if(answer.userChoice === "View All Roles"){
-            empDB.getAllRoles().then(allRoles => dataTable(allRoles));
         }else if(answer.userChoice === "Add Employee"){
             addEmployee();
+        }else if(answer.userChoice === "Update Employee Role"){
+            updateEmployeeRole();
+        }else if(answer.userChoice === "Update Employee Manager"){
+            updateEmployeeManager();
+        }else if(answer.userChoice === "View Employees By Manager"){
+            viewEmployeesByManager();
+        }else if(answer.userChoice === "Delete Employee"){
+            deleteEmployee();
+        }else if(answer.userChoice === "View All Roles"){
+            empDB.getAllRoles().then(allRoles => dataTable(allRoles));
+        }else if(answer.userChoice === "Add Role"){
+            addRole();
+        }else if(answer.userChoice === "Delete Role"){
+            deleteRole();
         }else if(answer.userChoice === "View All Departments"){
             empDB.getAllDepartments(false).then(departments =>{
                 dataTable(departments)
             });
-        }else if(answer.userChoice === "Add Role"){
-            addRole();
         }else if(answer.userChoice === "Add Department"){
             addDepartment();
-        }else if(answer.userChoice === "Update Employee Role"){
-            updateEmployeeRole();
-        }
-        else if(answer.userChoice === "Update Employee Manager"){
-            updateEmployeeManager();
-        }
-        else if(answer.userChoice === "View Employees By Manager"){
-            viewEmployeesByManager();
-        }else if(answer.userChoice === "Delete Employee"){
-            deleteEmployee();
-        }else if(answer.userChoice === "Delete Role"){
-            deleteRole();
         }else if(answer.userChoice === "Delete Department"){
             deleteDepartment();
         }
